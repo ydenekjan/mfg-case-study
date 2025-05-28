@@ -13,7 +13,7 @@ const Pagination = ({ page, setPage, hasNextPage }: Props) => {
       className={"max-w-[800px] px-12 flex w-full justify-between items-center"}
     >
       <Button
-        className={"h-10 md:h-12 aspect-square rounded-lg bg-amber-200"}
+        className={"h-10 md:h-12 aspect-square rounded-lg"}
         disabled={page < 1}
         onClick={() => setPage((prev) => prev - 1)}
       ></Button>
@@ -31,7 +31,7 @@ const Pagination = ({ page, setPage, hasNextPage }: Props) => {
         </div>
       </div>
       <Button
-        className={"h-10 md:h-12 aspect-square rounded-lg bg-amber-200"}
+        className={"h-10 md:h-12 aspect-square rounded-lg"}
         disabled={!hasNextPage}
         onClick={() => setPage((prev) => prev + 1)}
       ></Button>

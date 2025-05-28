@@ -4,12 +4,22 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "@/components/core/product/productCard";
 import { useGetProducts } from "@/hooks/products/useGetProducts";
 import Pagination from "@/components/core/navigation/pagination";
+import FilterBar, { Sorting } from "@/components/core/filters/filterBar";
 
 const ProductsContainer = () => {
   const [page, setPage] = useState(0);
+  const [sortBy, setSortBy] = useState<Sorting>("top");
 
-  const { data, isLoading, isPlaceholderData, isFetched } = useGetProducts({
+  const {
+    data,
+    isLoading,
+    isPlaceholderData,
+    isFetched,
+    isError,
+    isRefetching,
+  } = useGetProducts({
     page,
+    sortBy,
   });
 
   useEffect(() => {
@@ -18,8 +28,20 @@ const ProductsContainer = () => {
 
   console.log(data);
 
+  if (isError)
+    return (
+      <main className={"w-full flex flex-col items-center p-8 gap-8 text-xl"}>
+        Nepodařilo se načíst produkty.
+      </main>
+    );
+
   return (
     <main className={"w-full flex flex-col items-center p-8 gap-8"}>
+      <FilterBar
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        isLoading={isLoading || isRefetching}
+      />
       <section
         className={
           "max-w-[1600px] w-full gap-8 grid grid-cols-[repeat(auto-fill,minmax(196px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(256px,1fr))]"
@@ -30,7 +52,7 @@ const ProductsContainer = () => {
             <ProductCard
               key={isPlaceholderData ? idx : p.title}
               product={p}
-              isLoading={isLoading || isPlaceholderData}
+              isLoading={isLoading || isRefetching || isPlaceholderData}
             />
           );
         })}
