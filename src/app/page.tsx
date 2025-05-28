@@ -9,12 +9,10 @@ export default function Home() {
   const queryClient = new QueryClient();
 
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
       <Navbar />
-      <QueryClientProvider client={queryClient}>
-        <ProductsContainer />
-      </QueryClientProvider>
+      <ProductsContainer />
       <Footer />
-    </div>
+    </QueryClientProvider>
   );
 }

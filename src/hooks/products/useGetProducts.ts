@@ -9,7 +9,7 @@ const getProducts = async ({
   priceRange,
 }: IGetProductsParams) => {
   const res = await axios.get<IGetProducts>(
-    `http://localhost:3000/api/products?page=${page}&sortBy=${sortBy}&searchText=${searchText}&priceFrom=${priceRange[0]}&priceTo=${priceRange[1]}`,
+    `/api/products?page=${page}&sortBy=${sortBy}&searchText=${searchText}&priceFrom=${priceRange[0]}&priceTo=${priceRange[1]}`,
   );
 
   if (res.status === 200) return res.data;
