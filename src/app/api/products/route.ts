@@ -1,18 +1,23 @@
 import { NextRequest } from "next/server";
 import data from "@/../data/dataset-serp.json";
 import { Sorting } from "@/components/core/filters/filterBar";
-import { getSearchedData, getSortedData } from "@/lib/utils";
+import { getPriceRangeData, getSearchedData, getSortedData } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
   //not really great parsing but doesn't matter in mock api
-  const page = Number(searchParams.get("page")) || 0;
+  const page = Number(searchParams.get("page") || 0);
   const sortBy = (searchParams.get("sortBy") as Sorting) || "top";
   const searchText = searchParams.get("searchText") || "";
+  const priceFrom = Number(searchParams.get("priceFrom") || 0);
+  const priceTo = Number(searchParams.get("priceTo") || 0) || Infinity;
   const pageSize = 20;
 
-  const filteredData = getSearchedData(getSortedData(data, sortBy), searchText);
+  const filteredData = getSearchedData(
+    getPriceRangeData(getSortedData(data, sortBy), priceFrom, priceTo),
+    searchText,
+  );
 
   const result = {
     data: filteredData.slice(page * pageSize, page * pageSize + pageSize),

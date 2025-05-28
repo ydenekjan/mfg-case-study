@@ -26,3 +26,11 @@ export const getSearchedData = (data: IProduct[], searchText: string) => {
     return haystack.includes(searchText.toLowerCase());
   });
 };
+
+export const getPriceRangeData = (
+  data: IProduct[],
+  priceFrom: number,
+  priceTo: number,
+) => {
+  return data.filter(({ price }) => priceFrom <= price && price <= priceTo);
+};

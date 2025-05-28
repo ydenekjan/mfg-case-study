@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import _ from "lodash";
+import { Slider } from "@/components/ui/slider";
 
 export type Sorting = "top" | "priceLow" | "priceHigh";
 
@@ -16,13 +17,19 @@ type Props = {
   sortBy: Sorting;
   setSortBy: React.Dispatch<React.SetStateAction<Sorting>>;
   setDebounceSearchText: React.Dispatch<React.SetStateAction<string>>;
+  setDebouncedPriceRange: React.Dispatch<
+    React.SetStateAction<[number, number]>
+  >;
+  maxPrice: number;
   isLoading: boolean;
 };
 
 const FilterBar = ({
   sortBy,
   setSortBy,
+  setDebouncedPriceRange,
   setDebounceSearchText,
+  maxPrice,
   isLoading,
 }: Props) => {
   const handleDebounceCallback = (value: string) => {
@@ -39,9 +46,23 @@ const FilterBar = ({
   };
 
   const [searchText, setSearchText] = useState("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1]);
+
+  const hasInitialized = useRef(false);
+
+  useEffect(() => {
+    if (!hasInitialized.current && maxPrice > 0) {
+      setPriceRange([0, maxPrice]);
+      hasInitialized.current = true;
+    }
+  }, [maxPrice]);
 
   return (
-    <aside className={"w-full flex max-md:flex-col gap-4 max-w-[1600px]"}>
+    <aside
+      className={
+        "w-full flex max-md:flex-col-reverse gap-4 max-w-[1600px] md:max-xl:flex-wrap"
+      }
+    >
       <div className={"flex gap-2"}>
         {sorting.map((sorting) => (
           <Button
@@ -60,7 +81,36 @@ const FilterBar = ({
         value={searchText}
         onChange={handleChange}
         placeholder={"Co hledáte? Např. Asymetrická vana..."}
+        className={"max-md:order-3 md:max-xl:flex-1"}
       />
+      <div
+        className={
+          "flex w-full items-center gap-2 max-sm:flex-wrap max-sm:justify-between"
+        }
+      >
+        <Slider
+          value={priceRange}
+          onValueChange={(newValues) => setPriceRange(newValues)}
+          onValueCommit={(newValues) => setDebouncedPriceRange(newValues)}
+          min={0}
+          max={maxPrice}
+          step={10}
+          className={"sm:order-2"}
+        />
+        <Input
+          disabled={true}
+          value={!hasInitialized.current ? "" : priceRange[0]}
+          id="priceFrom"
+          className={"max-w-24 w-full sm:order-1"}
+        />
+
+        <Input
+          disabled={true}
+          value={!hasInitialized.current ? "" : priceRange[1]}
+          id="priceTo"
+          className={"max-w-24 w-full sm:order-3"}
+        />
+      </div>
     </aside>
   );
 };

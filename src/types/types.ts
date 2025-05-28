@@ -28,4 +28,5 @@ export interface IGetProductsParams {
   page: number;
   sortBy: Sorting;
   searchText: string;
+  priceRange: [number, number | null];
 }
