@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
   const result = {
     data: filteredData.slice(page * pageSize, page * pageSize + pageSize),
     nextPage: (page + 1) * pageSize < filteredData.length ? page + 1 : null,
+    maxPage: Math.ceil(filteredData.length / pageSize) - 1,
   };
 
   //mock delay

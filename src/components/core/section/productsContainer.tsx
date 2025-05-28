@@ -67,6 +67,7 @@ const ProductsContainer = () => {
           page={page}
           setPage={setPage}
           hasNextPage={!!data?.nextPage}
+          maxPage={data?.maxPage}
           isLoading={isLoading || isRefetching}
         />
       ) : (

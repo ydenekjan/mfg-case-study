@@ -1,3 +1,5 @@
+import { Sorting } from "@/components/core/filters/filterBar";
+
 export interface Props {
   Children: { children: React.ReactNode };
   ClassName: { classname: string };
@@ -14,4 +16,16 @@ export interface IProduct {
   content: string;
   url: string;
   relevance: number;
+}
+
+export interface IGetProducts {
+  data: IProduct[];
+  nextPage: number;
+  maxPage: number;
+}
+
+export interface IGetProductsParams {
+  page: number;
+  sortBy: Sorting;
+  searchText: string;
 }

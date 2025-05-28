@@ -1,18 +1,6 @@
-import { IProduct } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Sorting } from "@/components/core/filters/filterBar";
-
-interface IGetProducts {
-  data: IProduct[];
-  nextPage: number;
-}
-
-interface IGetProductsParams {
-  page: number;
-  sortBy: Sorting;
-  searchText: string;
-}
+import { IGetProducts, IGetProductsParams } from "@/types/types";
 
 const getProducts = async ({
   page,
@@ -36,7 +24,7 @@ export function useGetProducts({
   return useQuery<IGetProducts>({
     queryKey: ["products", page, sortBy, searchText],
     queryFn: () => getProducts({ page, sortBy, searchText }),
-    placeholderData: { data: new Array(20).fill({}), nextPage: 1 },
+    placeholderData: { data: new Array(20).fill({}), nextPage: 1, maxPage: 0 },
     //auto refetch after 60 minutes
     staleTime: 1000 * 60 * 60,
   });
