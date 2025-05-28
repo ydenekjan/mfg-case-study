@@ -11,10 +11,16 @@ interface IGetProducts {
 interface IGetProductsParams {
   page: number;
   sortBy: Sorting;
+  searchText: string;
 }
-const getProducts = async ({ page, sortBy }: IGetProductsParams) => {
+
+const getProducts = async ({
+  page,
+  sortBy,
+  searchText,
+}: IGetProductsParams) => {
   const res = await axios.get<IGetProducts>(
-    `http://localhost:3000/api/products?page=${page}&sortBy=${sortBy}`,
+    `http://localhost:3000/api/products?page=${page}&sortBy=${sortBy}&searchText=${searchText}`,
   );
 
   if (res.status === 200) return res.data;
@@ -25,14 +31,13 @@ const getProducts = async ({ page, sortBy }: IGetProductsParams) => {
 export function useGetProducts({
   page = 0,
   sortBy = "top",
-}: {
-  page?: number;
-  pageSize?: number;
-  sortBy?: Sorting;
-}) {
+  searchText = "",
+}: Partial<IGetProductsParams>) {
   return useQuery<IGetProducts>({
-    queryKey: ["products", page, sortBy],
-    queryFn: () => getProducts({ page, sortBy }),
+    queryKey: ["products", page, sortBy, searchText],
+    queryFn: () => getProducts({ page, sortBy, searchText }),
     placeholderData: { data: new Array(20).fill({}), nextPage: 1 },
+    //auto refetch after 60 minutes
+    staleTime: 1000 * 60 * 60,
   });
 }

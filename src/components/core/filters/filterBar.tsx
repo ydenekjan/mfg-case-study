@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useQueryClient } from "@tanstack/react-query";
+import _ from "lodash";
 
 export type Sorting = "top" | "priceLow" | "priceHigh";
 
@@ -15,15 +15,30 @@ const sortingMap = {
 type Props = {
   sortBy: Sorting;
   setSortBy: React.Dispatch<React.SetStateAction<Sorting>>;
+  setDebounceSearchText: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
 };
 
-const FilterBar = ({ sortBy, setSortBy, isLoading }: Props) => {
-  const queryClient = useQueryClient();
+const FilterBar = ({
+  sortBy,
+  setSortBy,
+  setDebounceSearchText,
+  isLoading,
+}: Props) => {
+  const handleDebounceCallback = (value: string) => {
+    setDebounceSearchText(value);
+  };
+  const handleDebounce = useCallback(
+    _.debounce(handleDebounceCallback, 1000),
+    [],
+  );
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["products", sortBy] });
-  }, [sortBy]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    handleDebounce(e.target.value);
+  };
+
+  const [searchText, setSearchText] = useState("");
 
   return (
     <aside className={"w-full flex max-md:flex-col gap-4 max-w-[1600px]"}>
@@ -40,7 +55,12 @@ const FilterBar = ({ sortBy, setSortBy, isLoading }: Props) => {
           </Button>
         ))}
       </div>
-      <Input placeholder={"Co hledáte? Např. Asymetrická vana..."} />
+      <Input
+        disabled={isLoading}
+        value={searchText}
+        onChange={handleChange}
+        placeholder={"Co hledáte? Např. Asymetrická vana..."}
+      />
     </aside>
   );
 };

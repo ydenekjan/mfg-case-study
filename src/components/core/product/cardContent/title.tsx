@@ -17,7 +17,7 @@ export const ProductTitle = ({
   return (
     <h3
       className={
-        "text-md md:text-lg font-bold text-secondary-foreground line-clamp-3 md:line-clamp-2 overflow-ellipsis leading-6"
+        "text-md md:text-lg font-bold text-secondary-foreground line-clamp-2 md:line-clamp-3 overflow-ellipsis leading-6"
       }
     >
       {title}

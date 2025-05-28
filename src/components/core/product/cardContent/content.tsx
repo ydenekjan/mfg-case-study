@@ -20,7 +20,7 @@ export const ProductContent = ({
   return (
     <p
       className={
-        "text-sm font-medium text-muted-foreground overflow-hidden line-clamp-6 md:line-clamp-4"
+        "text-sm font-medium text-muted-foreground overflow-hidden line-clamp-4 md:line-clamp-6"
       }
     >
       {content}

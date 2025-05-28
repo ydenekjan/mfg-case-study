@@ -19,3 +19,10 @@ export const getSortedData = (data: IProduct[], sortBy: Sorting) => {
       return data;
   }
 };
+
+export const getSearchedData = (data: IProduct[], searchText: string) => {
+  return data.filter(({ title, content, categories, brand }) => {
+    const haystack = `${title} ${content} ${categories} ${brand}`.toLowerCase();
+    return haystack.includes(searchText.toLowerCase());
+  });
+};

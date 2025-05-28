@@ -7,26 +7,30 @@ import Pagination from "@/components/core/navigation/pagination";
 import FilterBar, { Sorting } from "@/components/core/filters/filterBar";
 
 const ProductsContainer = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(3);
   const [sortBy, setSortBy] = useState<Sorting>("top");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
 
-  const {
-    data,
-    isLoading,
-    isPlaceholderData,
-    isFetched,
-    isError,
-    isRefetching,
-  } = useGetProducts({
-    page,
-    sortBy,
-  });
+  const { data, isLoading, isPlaceholderData, isError, isRefetching, refetch } =
+    useGetProducts({
+      page,
+      sortBy,
+      searchText: debouncedSearchText,
+    });
 
+  //scroll to top when new page is fetched
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [isFetched]);
+  }, [data]);
 
-  console.log(data);
+  //go back to the first page on sorting or search change
+  useEffect(() => {
+    setPage(0);
+  }, [sortBy, debouncedSearchText]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (isError)
     return (
@@ -40,6 +44,7 @@ const ProductsContainer = () => {
       <FilterBar
         sortBy={sortBy}
         setSortBy={setSortBy}
+        setDebounceSearchText={setDebouncedSearchText}
         isLoading={isLoading || isRefetching}
       />
       <section
@@ -57,12 +62,15 @@ const ProductsContainer = () => {
           );
         })}
       </section>
-      {data?.data && (
+      {data?.data && data.data.length > 0 ? (
         <Pagination
           page={page}
           setPage={setPage}
           hasNextPage={!!data?.nextPage}
+          isLoading={isLoading || isRefetching}
         />
+      ) : (
+        "Nebyly nalezeny žádné výsledky."
       )}
     </main>
   );
