@@ -1,7 +1,6 @@
-import { NextRequest } from "next/server";
 import data from "@/../data/dataset-serp.json";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const result = Math.max(...data.map((item) => item.price));
   //mock delay
   await new Promise((resolve) => setTimeout(resolve, 1000));

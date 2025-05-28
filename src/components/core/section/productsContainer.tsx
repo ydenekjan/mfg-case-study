@@ -1,11 +1,10 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import ProductCard from "@/components/core/product/productCard";
-import { useGetProducts } from "@/hooks/products/useGetProducts";
-import Pagination from "@/components/core/navigation/pagination";
-import FilterBar, { Sorting } from "@/components/core/filters/filterBar";
+import { useEffect, useState } from "react";
 import { useGetMaxPrice } from "@/hooks/products/useGetMaxPrice";
+import { useGetProducts } from "@/hooks/products/useGetProducts";
+import ProductCard from "@/components/core/product/productCard";
+import FilterBar, { Sorting } from "@/components/core/filters/filterBar";
+import Pagination from "@/components/core/navigation/pagination";
 
 const ProductsContainer = () => {
   const [page, setPage] = useState(0);
@@ -29,8 +28,6 @@ const ProductsContainer = () => {
     priceRange: debouncedPriceRange,
   });
 
-  console.log(maxPrice);
-
   //scroll to top when new page is fetched
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -43,7 +40,11 @@ const ProductsContainer = () => {
 
   if (isError)
     return (
-      <main className={"w-full flex flex-col items-center p-8 gap-8 text-xl"}>
+      <main
+        className={
+          "w-full flex flex-col items-center p-8 py-12 gap-8 text-xl flex-1"
+        }
+      >
         Nepodařilo se načíst produkty.
       </main>
     );
@@ -57,7 +58,9 @@ const ProductsContainer = () => {
     : (productsData?.data ?? []);
 
   return (
-    <main className={"w-full flex flex-col items-center p-8 gap-8"}>
+    <main
+      className={"w-full flex flex-col items-center p-8 py-12 gap-8 flex-1"}
+    >
       <FilterBar
         sortBy={sortBy}
         setSortBy={setSortBy}
@@ -71,7 +74,7 @@ const ProductsContainer = () => {
           "max-w-[1600px] w-full gap-8 grid grid-cols-[repeat(auto-fill,minmax(196px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(256px,1fr))]"
         }
       >
-        {itemsToRender.map((p, idx) => (
+        {itemsToRender.map((p) => (
           <ProductCard key={p.url} product={p} isLoading={isLoading} />
         ))}
       </section>

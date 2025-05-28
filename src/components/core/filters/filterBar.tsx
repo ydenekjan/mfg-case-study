@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import _ from "lodash";
+import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import _debounce from "lodash/debounce";
 
 export type Sorting = "top" | "priceLow" | "priceHigh";
 
@@ -32,12 +32,12 @@ const FilterBar = ({
   maxPrice,
   isLoading,
 }: Props) => {
-  const handleDebounceCallback = (value: string) => {
-    setDebounceSearchText(value);
-  };
-  const handleDebounce = useCallback(
-    _.debounce(handleDebounceCallback, 1000),
-    [],
+  const handleDebounce = useMemo(
+    () =>
+      _debounce((value: string) => {
+        setDebounceSearchText(value);
+      }, 1000),
+    [setDebounceSearchText],
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Navbar = () => {
+const Footer = () => {
   const mockLinks: number[] = new Array(6).fill(0);
 
   return (
@@ -19,4 +19,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Footer;
