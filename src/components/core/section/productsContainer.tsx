@@ -53,7 +53,7 @@ const ProductsContainer = () => {
 
   const itemsToRender = isLoading
     ? Array.from({ length: 20 }).map((_, i) => ({
-        url: `skeleton-${i}`,
+        ean: `skeleton-${i}`,
       }))
     : (productsData?.data ?? []);
 
@@ -75,7 +75,7 @@ const ProductsContainer = () => {
         }
       >
         {itemsToRender.map((p) => (
-          <ProductCard key={p.url} product={p} isLoading={isLoading} />
+          <ProductCard key={p.ean} product={p} isLoading={isLoading} />
         ))}
       </section>
       {productsData?.data && productsData.data.length > 0 ? (
