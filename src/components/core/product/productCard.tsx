@@ -15,7 +15,7 @@ const ProductCard = ({
   return (
     <div
       className={
-        "w-[400px] rounded-md shadow-sm hover:shadow-lg border border-border transition-all ease-in p-4 lg:p-6 flex flex-col gap-y-4"
+        "min-w-[196px] w-full rounded-md shadow-sm hover:shadow-lg border border-border transition-all ease-in p-4 lg:p-6 flex flex-col gap-y-4"
       }
     >
       <ProductImage image={image} title={title} isLoading={isLoading} />

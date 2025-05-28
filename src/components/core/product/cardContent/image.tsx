@@ -20,6 +20,7 @@ export const ProductImage = ({
         </div>
       ) : (
         <Image
+          sizes={"256px"}
           alt={`${title} cover image`}
           fill={true}
           src={image || globe}
