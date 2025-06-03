@@ -1,3 +1,8 @@
+## About
+
+This project was a part of a hiring process. Despite that I'm very content with how it turned out.
+Ended up creating my own Next.js API as no API was provided to me. This further honed my backend skills and forced me to learn something new at the same time.
+
 ## Starting locally
 
 ```bash
